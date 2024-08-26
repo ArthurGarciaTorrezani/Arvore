@@ -39,27 +39,56 @@ public class TreeBinary {
           }else{
                Node dad;
                Node noX;
-               //Case 1: nao possui nenhum filho
-               if(root.getValue() != value){
-                    dad = searchDad(root,value);
-                    if(dad.getValue() > value){
-                         dad.setLeft(null);
-                         return true;
-                    }else{
-                         dad.setRight(null);
-                         return true;
-                    }
-               }
-               else{
+               if(root.getValue() == value){
                     dad = root;
                     noX = root;
+               }else{
+                    dad = searchDad(root, value);
+                    if(dad.getValue() < value){
+                         noX = dad.getRight();
+                    }else{
+                         noX = dad.getLeft();
+                    }
                }
-               //Case 2:
-               if(noX.getRight() != null){
-
+               if(noX.getRight() == null && noX.getLeft() == null){ //case 1
+                    if(dad.getValue() < value){
+                         dad.setRight(null);
+                         return true;
+                    }else{
+                         dad.setLeft(null);
+                         return true;
+                    }
+               }else if(noX.getRight() != null && noX.getLeft() != null){
+                    Node noDadRightLeft = farLeft(noX, noX.getRight());
+               }else{
+                    if(noX.getRight() == null){
+                         if(dad.getValue() > value){
+                              dad.setLeft(noX.getLeft());
+                              noX = null;
+                         }else{
+                              dad.setRight(noX.getLeft());
+                              noX = null;
+                         }
+                    }
+                    if(noX.getLeft() == null){
+                         if(dad.getValue() > value){
+                              dad.setLeft(noX.getRight());
+                              noX = null;
+                         }else{
+                              dad.setRight(noX.getRight());
+                              noX = null;
+                         }
+                    }
                }
+               return false;
           }
-          return false;
+     }
+
+     private Node farLeft(Node dad, Node son){
+          if(son.getLeft() == null){
+               return dad;
+          }
+          return farLeft(son, son.getLeft());
      }
 
      public Node searchDad(Node current, int value){
