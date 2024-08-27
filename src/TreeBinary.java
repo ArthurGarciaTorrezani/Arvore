@@ -51,34 +51,30 @@ public class TreeBinary {
                     }
                }
                if(noX.getRight() == null && noX.getLeft() == null){ //case 1
-                    if(dad.getValue() < value){
-                         dad.setRight(null);
-                         return true;
-                    }else{
-                         dad.setLeft(null);
-                         return true;
-                    }
-               }else if(noX.getRight() != null && noX.getLeft() != null){
+                    if(dad.getValue() < value) dad.setRight(null);
+                    else dad.setLeft(null);
+                    return true;
+               }else if(noX.getRight() != null && noX.getLeft() != null){ // case 3
                     Node noDadRightLeft = farLeft(noX, noX.getRight());
-               }else{
+                    Node substite = noDadRightLeft.getLeft();
+                    noDadRightLeft.setLeft(null);
+                    substite.setRight(noX.getRight());
+                    substite.setLeft(noX.getLeft());
+                    noX.setRight(null);
+                    noX.setLeft(null);
+                    if(dad.getValue() < value) dad.setRight(substite);
+                    else dad.setLeft(substite);
+               }else{ // case 2
                     if(noX.getRight() == null){
-                         if(dad.getValue() > value){
-                              dad.setLeft(noX.getLeft());
-                              noX = null;
-                         }else{
-                              dad.setRight(noX.getLeft());
-                              noX = null;
-                         }
+                         if(dad.getValue() > value) dad.setLeft(noX.getLeft());
+                         else dad.setRight(noX.getLeft());
+
                     }
                     if(noX.getLeft() == null){
-                         if(dad.getValue() > value){
-                              dad.setLeft(noX.getRight());
-                              noX = null;
-                         }else{
-                              dad.setRight(noX.getRight());
-                              noX = null;
-                         }
+                         if(dad.getValue() > value) dad.setLeft(noX.getRight());
+                         else dad.setRight(noX.getRight());
                     }
+                    return true;
                }
                return false;
           }
