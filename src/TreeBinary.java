@@ -88,7 +88,7 @@ public class TreeBinary {
      }
 
      public Node searchDad(Node current, int value){
-          if(current == null) return null;
+          if(current == null) return null; 
           if(value > current.getValue()){
                if(current.getRight() != null){
                     if(current.getRight().getValue() == value){
@@ -110,5 +110,64 @@ public class TreeBinary {
                return searchDad(current.getRight(), value);
           }
           return null;
+     }
+
+     // contar numero de nós de uma arvore binaria 1 
+     public int numNos(){
+          return numNos(root);
+     }
+     private int numNos(Node no){
+          if(no == null) return 0;
+          return numNos(no.getLeft()) + numNos(no.getRight()) + 1;
+     }
+
+     // contar numero de nós nao-folha 2
+     public int numNosNF(){
+          return numNosNF(root);
+     }
+     private int numNosNF(Node no){
+          if(no == null) return 0;
+          if(no.getLeft() == null && no.getRight() == null) return 0;
+          return  1 + numNosNF(no.getLeft()) + numNosNF(no.getRight());
+     }
+
+     // conta o número de nós folhas de uma árvore binária. 3
+     public int numNosF(){
+          return numNosF(root);
+     }
+     private int numNosF(Node no){
+          if(no == null) return 0;
+          if(no.getLeft() == null && no.getRight() == null) return 1;
+          return numNosF(no.getLeft()) + numNosF(no.getRight());
+     }
+
+     // calcular altura de uma arvore binaria
+     public int tamanhoArovre(){
+          return tamanhoArovre(root);
+     }
+     private int tamanhoArovre(Node no){
+          if(no == null){
+               return 0;
+          }
+          int e = tamanhoArovre(no.getLeft());
+          int d = tamanhoArovre(no.getRight());
+          if(e > d){
+               return e  + 1;
+          }
+          return d + 1;
+     }
+
+     // remover elementos pares
+     public void removerPares(){
+          removerPares(root);
+     }
+     private void removerPares(Node no){
+          if(no != null){
+               removerPares(no.getLeft());
+               removerPares(no.getRight());
+               if(no.getValue() % 2 == 0){
+                    remove(no.getValue());
+               }      
+          }
      }
 }
