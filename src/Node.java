@@ -2,6 +2,7 @@ public class Node {
      private Node right;
      private Node left;
      private int value;
+     private int fatorBalanceamento = 0;
 
      public Node getRight() {
           return right;
@@ -29,5 +30,13 @@ public class Node {
 
      public Node(int value){
           this.value = value;
+     }
+
+     public void setFator(int num){
+          fatorBalanceamento += num;
+     }
+
+     public int getFator(){
+          return fatorBalanceamento;
      }
 }

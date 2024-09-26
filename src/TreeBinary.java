@@ -33,52 +33,80 @@ public class TreeBinary {
           }
      }
 
-     public boolean remove(int value){
-          if(root == null){
-               return false;
-          }else{
-               Node dad;
-               Node noX;
-               if(root.getValue() == value){
-                    dad = root;
-                    noX = root;
-               }else{
-                    dad = searchDad(root, value);
-                    if(dad.getValue() < value){
-                         noX = dad.getRight();
-                    }else{
-                         noX = dad.getLeft();
-                    }
-               }
-               if(noX.getRight() == null && noX.getLeft() == null){ //case 1
-                    if(dad.getValue() < value) dad.setRight(null);
-                    else dad.setLeft(null);
-                    return true;
-               }else if(noX.getRight() != null && noX.getLeft() != null){ // case 3
-                    Node noDadRightLeft = farLeft(noX, noX.getRight());
-                    Node substite = noDadRightLeft.getLeft();
-                    noDadRightLeft.setLeft(null);
-                    substite.setRight(noX.getRight());
-                    substite.setLeft(noX.getLeft());
-                    noX.setRight(null);
-                    noX.setLeft(null);
-                    if(dad.getValue() < value) dad.setRight(substite);
-                    else dad.setLeft(substite);
-               }else{ // case 2
-                    if(noX.getRight() == null){
-                         if(dad.getValue() > value) dad.setLeft(noX.getLeft());
-                         else dad.setRight(noX.getLeft());
-
-                    }
-                    if(noX.getLeft() == null){
-                         if(dad.getValue() > value) dad.setLeft(noX.getRight());
-                         else dad.setRight(noX.getRight());
-                    }
-                    return true;
-               }
-               return false;
+     public boolean remove(int value) {
+          if (root == null) {
+              return false; // A árvore está vazia
           }
-     }
+      
+          // Caso em que a raiz é o nó a ser removido
+          if (root.getValue() == value) {
+              // Se a raiz não tem filhos, simplesmente a remove
+              if (root.getLeft() == null && root.getRight() == null) {
+                  root = null;
+              } else if (root.getLeft() == null) { // Se não tem filho esquerdo
+                  root = root.getRight();
+              } else if (root.getRight() == null) { // Se não tem filho direito
+                  root = root.getLeft();
+              } else { // Caso com dois filhos
+                  Node noDadRightLeft = farLeft(root,root.getRight());
+                  Node substite = noDadRightLeft.getRight();
+                  noDadRightLeft.setLeft(null);
+                  substite.setLeft(root.getLeft());
+                  root = substite; // Substitui a raiz pela substituta
+              }
+              return true; // A raiz foi removida
+          }
+      
+          // Para outros casos, procure o pai do nó a ser removido
+          Node dad = searchDad(root, value);
+          if (dad == null) {
+              return false; // O valor não foi encontrado
+          }
+      
+          Node noX = (dad.getValue() < value) ? dad.getRight() : dad.getLeft();
+      
+          // Caso 1: nó sem filhos
+          if (noX.getRight() == null && noX.getLeft() == null) {
+              if (dad.getValue() < value) {
+                  dad.setRight(null);
+              } else {
+                  dad.setLeft(null);
+              }
+              return true;
+          }
+      
+          // Caso 2: um filho
+          if (noX.getRight() == null) {
+              if (dad.getValue() < value) {
+                  dad.setRight(noX.getLeft());
+              } else {
+                  dad.setLeft(noX.getLeft());
+              }
+          } else if (noX.getLeft() == null) {
+              if (dad.getValue() < value) {
+                  dad.setRight(noX.getRight());
+              } else {
+                  dad.setLeft(noX.getRight());
+              }
+          }
+      
+          // Caso 3: dois filhos
+          if (noX.getRight() != null && noX.getLeft() != null) {
+              Node noDadRightLeft = farLeft(noX,noX.getRight());
+              Node substite = noDadRightLeft.getLeft();
+              noDadRightLeft.setLeft(null);
+              substite.setRight(noX.getRight());
+              substite.setLeft(noX.getLeft());
+              noX.setRight(null);
+              noX.setLeft(null);
+              if (dad.getValue() < value)  dad.setRight(substite);
+               else dad.setLeft(substite);
+              
+          }
+      
+          return true;
+      }
+      
 
      private Node farLeft(Node dad, Node son){
           if(son.getLeft() == null){
@@ -147,7 +175,7 @@ public class TreeBinary {
      }
      private int tamanhoArovre(Node no){
           if(no == null){
-               return 0;
+               return -1;
           }
           int e = tamanhoArovre(no.getLeft());
           int d = tamanhoArovre(no.getRight());
@@ -169,5 +197,76 @@ public class TreeBinary {
                     remove(no.getValue());
                }      
           }
+     }
+
+     // inverter arovre
+     public void inverter(){
+          inverter(root);
+     }
+
+     private void inverter(Node no){
+          if(no != null){
+               Node noE = no.getLeft();
+               Node noD = no.getRight();
+               no.setLeft(noD);
+               no.setRight(noE);
+               inverter(noD);
+               inverter(noE);
+          }
+
+     }
+
+     // 
+     private Node balanceamento(Node no){
+          if(no == null){
+               return null;
+          }
+
+          Node e = balanceamento(no.getLeft());
+          Node d = balanceamento(no.getRight());
+
+          if(d != null && e == null){
+               no.setFator(d.getFator()+1);
+          }
+          if(d == null && e != null){
+               no.setFator(e.getFator()+1);
+          }
+          if(d != null && e != null){
+               no.setFator(d.getFator() - e.getFator());
+          }
+
+          if(no.getFator() == 2){
+               if(no.getRight().getFator() == 1 || no.getRight().getFator() == 0){
+                    Node aux = no.getRight();
+                    aux.setLeft(no);
+                    no = aux;
+               }
+               if(no.getRight().getFator() == -1){
+                    Node aux = no.getRight().getLeft();
+                    aux.setRight(no.getRight());
+                    aux.setLeft(no);
+                    no.getRight().setLeft(aux.getRight());
+                    no.setRight(null);
+                    no = aux;
+               }
+          }
+
+          if(no.getFator() == -2){
+               if(no.getRight().getFator() == -1 || no.getRight().getFator() == 0){
+                    Node aux = no.getLeft();
+                    aux.setRight(no);
+                    no = aux;
+               }
+               if(no.getRight().getFator() == 1){
+                    Node aux = no.getLeft().getRight();
+                    aux.setRight(no);
+                    aux.setLeft(no.getLeft());
+                    no.getLeft().setRight(aux.getLeft());
+                    no.setLeft(null);
+                    no = aux;
+               }
+          }
+
+          return no;
      }
 }
