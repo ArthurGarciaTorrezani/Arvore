@@ -253,57 +253,8 @@ public class TreeBinary {
      }
 
      //
-     private Node balanceamento(Node no) {
-          if (no == null) {
-               return null;
-          }
-
-          Node e = balanceamento(no.getLeft());
-          Node d = balanceamento(no.getRight());
-
-          if (d != null && e == null) {
-               no.setFator(d.getFator() + 1);
-          }
-          if (d == null && e != null) {
-               no.setFator(e.getFator() + 1);
-          }
-          if (d != null && e != null) {
-               no.setFator(d.getFator() - e.getFator());
-          }
-
-          if (no.getFator() == 2) {
-               if (no.getRight().getFator() == 1 || no.getRight().getFator() == 0) {
-                    Node aux = no.getRight();
-                    aux.setLeft(no);
-                    no = aux;
-               }
-               if (no.getRight().getFator() == -1) {
-                    Node aux = no.getRight().getLeft();
-                    aux.setRight(no.getRight());
-                    aux.setLeft(no);
-                    no.getRight().setLeft(aux.getRight());
-                    no.setRight(null);
-                    no = aux;
-               }
-          }
-
-          if (no.getFator() == -2) {
-               if (no.getRight().getFator() == -1 || no.getRight().getFator() == 0) {
-                    Node aux = no.getLeft();
-                    aux.setRight(no);
-                    no = aux;
-               }
-               if (no.getRight().getFator() == 1) {
-                    Node aux = no.getLeft().getRight();
-                    aux.setRight(no);
-                    aux.setLeft(no.getLeft());
-                    no.getLeft().setRight(aux.getLeft());
-                    no.setLeft(null);
-                    no = aux;
-               }
-          }
-
-          return no;
+     private void balanceamento(Node no) {
+         Balanceamento.balanceamento(no);
      }
 
      public void OrderPilha(){
