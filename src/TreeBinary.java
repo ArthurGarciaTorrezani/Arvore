@@ -12,14 +12,14 @@ public class TreeBinary {
      }
 
      private Node insertNewNode(Node newNode, Node current) {
-          if (current == null) 
+          if (current == null)
                return newNode;
           if (newNode.getValue() > current.getValue()) {
                current.setRight(insertNewNode(newNode, current.getRight()));
           }
-          if (newNode.getValue() < current.getValue()) { 
+          if (newNode.getValue() < current.getValue()) {
                current.setLeft(insertNewNode(newNode, current.getLeft()));
-          } 
+          }
           return Balanceamento.balanceamento(current);
      }
 
@@ -29,9 +29,9 @@ public class TreeBinary {
 
      private void preOrder(Node element) {
           if (element != null) {
-               System.out.println(element.getValue()); 
-               preOrder(element.getLeft()); 
-               preOrder(element.getRight()); 
+               System.out.println(element.getValue());
+               preOrder(element.getLeft());
+               preOrder(element.getRight());
           }
      }
 
@@ -41,9 +41,9 @@ public class TreeBinary {
 
      private void Order(Node element) {
           if (element != null) {
-               preOrder(element.getLeft()); 
-               System.out.println(element.getValue()); 
-               preOrder(element.getRight()); 
+               preOrder(element.getLeft());
+               System.out.println(element.getValue());
+               preOrder(element.getRight());
           }
      }
 
@@ -53,10 +53,10 @@ public class TreeBinary {
 
      private void posOrder(Node element) {
           if (element != null) {
-              
-               preOrder(element.getLeft()); 
-               preOrder(element.getRight()); 
-               System.out.println(element.getValue()); 
+
+               preOrder(element.getLeft());
+               preOrder(element.getRight());
+               System.out.println(element.getValue());
           }
      }
 
@@ -211,7 +211,8 @@ public class TreeBinary {
      }
 
      private int altura(Node no) {
-          if (no == null) return -1;
+          if (no == null)
+               return -1;
           return 1 + Math.max(altura(no.getLeft()), altura(no.getRight()));
      }
 
@@ -249,31 +250,33 @@ public class TreeBinary {
 
      //
      private void balanceamento(Node no) {
-         Balanceamento.balanceamento(no);
+          Balanceamento.balanceamento(no);
      }
 
-     public void OrderPilha(){
+     public void OrderPilha() {
           OrderPilha(root);
      }
-     //  order pilha
+
+     // order pilha
      private void OrderPilha(Node root) {
           Stack<Node> pilha = new Stack<>();
           while (root != null || !pilha.isEmpty()) {
                if (root != null) {
                     pilha.push(root);
                     root = root.getLeft();
-               }else{
+               } else {
                     root = pilha.pop();
                     System.out.println(root.getValue());
                     root = root.getRight();
                }
-               
+
           }
      }
 
-     public void PreOrderPilha(){
+     public void PreOrderPilha() {
           PreOrderPilha(root);
      }
+
      // pre order pilha
      private void PreOrderPilha(Node root) {
           Stack<Node> pilha = new Stack<>();
@@ -282,32 +285,38 @@ public class TreeBinary {
                     pilha.push(root);
                     System.out.println(root.getValue());
                     root = root.getLeft();
-               }else{
+               } else {
                     root = pilha.pop();
                     root = root.getRight();
                }
-               
+
           }
      }
 
-
-     public void PosOrderPilha(){
+        // pos order pilha
+     public void PosOrderPilha() {
           PosOrderPilha(root);
      }
-     // pos order pilha
+
+  
      private void PosOrderPilha(Node root) {
           Stack<Node> pilha = new Stack<>();
-          while (root != null || !pilha.isEmpty()) {
-               if (root != null) {
-                    pilha.push(root);
-                    root = root.getRight();
-               }else{
-                    root = pilha.pop();
-                    System.out.println(root.getValue());
-                    root = root.getLeft();
-                  
+          Node p = root;
+          Node lastVisited = null;
+          while (p != null || !pilha.empty()) {
+               if (p != null) {
+                    pilha.push(p);
+                    p = p.getLeft();
+               } else {
+                    Node peekNode = pilha.peek();
+
+                    if (peekNode.getRight() != null && lastVisited != peekNode.getRight()) {
+                         p = peekNode.getRight();
+                    } else {
+                         System.out.println(peekNode.getValue());
+                         lastVisited = pilha.pop();
+                    }
                }
-               
           }
      }
 }
