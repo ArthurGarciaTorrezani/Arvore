@@ -20,7 +20,7 @@ public class TreeBinary {
           if (newNode.getValue() < current.getValue()) { 
                current.setLeft(insertNewNode(newNode, current.getLeft()));
           } 
-          return current;
+          return Balanceamento.balanceamento(current);
      }
 
      public void preOrder() {
@@ -206,18 +206,13 @@ public class TreeBinary {
      }
 
      // calcular altura de uma arvore binaria 4
-     public int tamanhoArovre() {
-          return tamanhoArovre(root);
+     public int altura() {
+          return altura(root);
      }
 
-     private int tamanhoArovre(Node no) {
-          if (no == null)
-               return -1;
-
-          int e = tamanhoArovre(no.getLeft());
-          int d = tamanhoArovre(no.getRight());
-          if (e > d) return e + 1;
-          return d + 1;
+     private int altura(Node no) {
+          if (no == null) return -1;
+          return 1 + Math.max(altura(no.getLeft()), altura(no.getRight()));
      }
 
      // remover elementos pares 5

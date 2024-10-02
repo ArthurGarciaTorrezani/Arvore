@@ -10,12 +10,6 @@ public class Main {
         //tree.preOrder();
         
         System.out.println("=============");
-        tree.posOrder();
-        System.out.println("============");
-        tree.Order();
-        System.out.println("============");
-        tree.preOrder();
-        System.out.println("============");
-        tree.PosOrderPilha();
+        
     }
 }

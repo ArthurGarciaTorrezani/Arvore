@@ -1,5 +1,5 @@
 public class Balanceamento {
-     public static Node balanceamento(Node no){
+     public static Node balanceamento(Node no) {
           if (no == null) {
                return null;
           }
@@ -19,33 +19,33 @@ public class Balanceamento {
 
           if (no.getFator() == 2) {
                if (no.getRight().getFator() == 1 || no.getRight().getFator() == 0) {
-                   leftSimple(no);
+                    no = leftSimple(no);
                }
                if (no.getRight().getFator() == -1) {
-                   rightLeft(no);
+                    no = rightLeft(no);
                }
           }
 
           if (no.getFator() == -2) {
                if (no.getRight().getFator() == -1 || no.getRight().getFator() == 0) {
-                   leftSimple(no);
+                    no = rightSimple(no);
                }
                if (no.getRight().getFator() == 1) {
-               leftRight(no);
+                    no = leftRight(no);
                }
           }
 
           return no;
      }
 
-     public static void leftSimple(Node no){
+     private static Node leftSimple(Node no) {
           Node aux = no.getRight();
-          aux.setLeft(no);
           no.setRight(aux.getLeft());
-          no = aux;
+          aux.setLeft(no);
+          return aux;
      }
 
-     public static void rightLeft(Node no){
+     private static Node rightLeft(Node no) {
           Node aux = no.getRight().getLeft();
 
           no.setRight(aux.getLeft());
@@ -55,17 +55,18 @@ public class Balanceamento {
           aux.setLeft(no);
           no.getRight().setLeft(aux.getRight());
           no.setRight(null);
-          no = aux;
+
+          return aux;
      }
 
-     public static void rightSimple(Node no){
+     private static Node rightSimple(Node no) {
           Node aux = no.getLeft();
-          aux.setRight(no);
           no.setLeft(aux.getRight());
-          no = aux;
+          aux.setRight(no);
+          return aux;
      }
 
-     public static void leftRight(Node no){
+     private static Node leftRight(Node no) {
           Node aux = no.getLeft().getRight();
 
           no.setLeft(aux.getRight());
@@ -75,6 +76,6 @@ public class Balanceamento {
           aux.setLeft(no.getLeft());
           no.getLeft().setRight(aux.getLeft());
           no.setLeft(null);
-          no = aux;
+          return aux;
      }
 }
